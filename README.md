@@ -4,13 +4,13 @@ To get the app running locally:
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/your-username/NodeTreeEditor.git
+   git clone https://github.com/your-username/locofy-homework.git
   ```
 2. Install dependencies:
   ```bash
     cd locofy-homework
     npm install
-  ```
+
 3. Start the application:
   ```bash
     npm run dev
