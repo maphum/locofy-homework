@@ -3,21 +3,16 @@
 To get the app running locally:
 
 1. Clone the repository:
-git clone https://github.com/maphum/locofy-homework.git
+   ```bash
+   git clone https://github.com/your-username/NodeTreeEditor.git
 
-markdown
-Copy code
 2. Install dependencies:
-cd locofy-homework
-npm install
-
-markdown
-Copy code
+  ```bash
+    cd locofy-homework
+    npm install
 3. Start the application:
-npm run dev
-
-vbnet
-Copy code
+  ```bash
+    npm run dev
 
 ## Usage
 
