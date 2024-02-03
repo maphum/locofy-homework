@@ -80,6 +80,7 @@ const App: React.FC = () => {
           <button
             onClick={() => {
               deleteSelected(nodes, selectedNodes)
+              setSelectedNodes([]);
               setNodes({ ...nodes });
             }}
             className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"

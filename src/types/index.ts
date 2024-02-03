@@ -136,6 +136,7 @@ export const adjustParentBounds = (parentNode: Node) => {
 };
 
 export const addNewNode = (root: Node, selectedNodes: string[]) => {
+    console.log(selectedNodes);
     if (selectedNodes.length == 0) selectedNodes = [root.id]
     selectedNodes.map(id => findNodeById(root, id)).filter(node => node !== null).forEach(node => {
         const str = (nodeId++).toString();

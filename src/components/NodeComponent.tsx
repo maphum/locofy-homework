@@ -39,7 +39,6 @@ const NodeComponent: React.FC<NodeComponentProps> = ({ node, isSelected, onSelec
         window.removeEventListener('mouseup', handleMouseUp);
     };
 
-    // Attach event listeners when dragging starts
     if (isDragging) {
         window.addEventListener('mousemove', handleMouseMove);
         window.addEventListener('mouseup', handleMouseUp);
@@ -78,7 +77,7 @@ const NodeComponent: React.FC<NodeComponentProps> = ({ node, isSelected, onSelec
                         node={childNode}
                         isSelected={isSelected}
                         onSelect={onSelect}
-                        onMove={onMove} // Pass onMove down to child components
+                        onMove={onMove}
                     />
                 ))}
             </div>
