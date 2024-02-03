@@ -5,15 +5,16 @@ To get the app running locally:
 1. Clone the repository:
    ```bash
    git clone https://github.com/your-username/NodeTreeEditor.git
-
+  ```
 2. Install dependencies:
   ```bash
     cd locofy-homework
     npm install
+  ```
 3. Start the application:
   ```bash
     npm run dev
-
+  ```
 ## Usage
 
 - **Add Node**: Click the "Add Node" button to introduce a new node to the root level. New nodes can also be added as children to selected nodes.
