@@ -9,16 +9,12 @@ To get the app running locally:
 2. Install dependencies:
   ```bash
     cd locofy-homework
-  ```
-
-  ```bash
     npm install
   ```
 
 3. Start the application:
-  ```bash
-    npm run dev
-  ```
+    `npm run dev`
+
 ## Usage
 
 - **Add Node**: Click the "Add Node" button to introduce a new node to the root level. New nodes can also be added as children to selected nodes.
