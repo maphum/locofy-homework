@@ -9,7 +9,11 @@ To get the app running locally:
 2. Install dependencies:
   ```bash
     cd locofy-homework
+  ```
+
+  ```bash
     npm install
+  ```
 
 3. Start the application:
   ```bash
