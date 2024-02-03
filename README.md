@@ -1,23 +1,20 @@
 ## Getting Started
 
 To get the app running locally:
-
-1. Clone the repository:
-   ```bash
-   git clone https://github.com/your-username/locofy-homework.git
-  ```
-2. Install dependencies:
-  ```bash
-    cd locofy-homework
-  ```
-  ```bash
-    npm install
-  ```
-
-3. Start the application:
 ```bash
-    npm run dev
+# Clone the repository:
+git clone https://github.com/angular/angular.git
+
+# Navigate to project directory
+cd locofy-homework
+
+# Install dependencies
+npm install
+
+# Start the application:
+npm run dev
 ```
+
 ## Usage
 
 - **Add Node**: Click the "Add Node" button to introduce a new node to the root level. New nodes can also be added as children to selected nodes.
