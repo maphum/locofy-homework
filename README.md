@@ -3,7 +3,7 @@
 To get the app running locally:
 ```bash
 # Clone the repository:
-git clone https://github.com/angular/angular.git
+git clone https://github.com/maphum/locofy-homework.git
 
 # Navigate to project directory
 cd locofy-homework
