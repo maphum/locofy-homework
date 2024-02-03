@@ -52,7 +52,7 @@ const NodeComponent: React.FC<NodeComponentProps> = ({ node, isSelected, onSelec
         position: 'absolute' as const,
         border: selectedNodes.includes(node.id) ? '4px solid white' : '4px solid gray', // Highlight if selected
         radius: '4px',
-        zIndex: selectedNodes.includes(node.id) ? 1000 : 1,
+        zIndex: selectedNodes.includes(node.id) ? 100000000 : 1,
         cursor: isDragging ? 'grabbing' : 'grab',
     };
 

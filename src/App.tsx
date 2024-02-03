@@ -3,7 +3,7 @@
 import React, { useState, useCallback } from 'react';
 import TreeView from './components/TreeView';
 import NodeComponent from './components/NodeComponent';
-import { Node, setupParent, detachParentAndGroupNodes, findNodeById, addNewNode, deleteSelected, adjustParentBounds, rootNode } from './types';
+import { Node, setupParent, detachParentAndGroupNodes, findNodeById, addNewNode, deleteSelected, adjustParentBounds, rootNode, findMostIntersectingSibling } from './types';
 import { useSelectedNodes } from './contexts/SelectedNodesContext';
 
 const App: React.FC = () => {
@@ -16,7 +16,8 @@ const App: React.FC = () => {
       return;
     }
     setNodes({
-      ...detachParentAndGroupNodes(nodes, selectedNodes)
+      ...
+      detachParentAndGroupNodes(nodes, selectedNodes)
     })
   }, [nodes, selectedNodes]);
 
@@ -31,7 +32,6 @@ const App: React.FC = () => {
 
   const moveNode = useCallback((id: string, newX: number, newY: number) => {
     const node = findNodeById(nodes, id);
-
     if (node == undefined) return;
     const deltaX = newX - node.x;
     const deltaY = newY - node.y;
@@ -43,10 +43,17 @@ const App: React.FC = () => {
     };
 
     adjustParentBounds(node.parentNode!)
-
     updateNodePosition(node);
+    const siblings = node.parentNode!.children.map(node => node.id).filter(nodeId => nodeId != id);
+    const nearestNode = findMostIntersectingSibling(node);
+    if (nearestNode !== null) {
+      setSelectedNodes([...selectedNodes.filter(NodeId => !siblings.includes(NodeId)), nearestNode.id])
+    }
+    else {
+      setSelectedNodes([id])
+    }
     setNodes({ ...nodes });
-  }, [nodes]);
+  }, [nodes, selectedNodes, setSelectedNodes]);
 
   return (
     <div className="App h-screen grid grid-cols-4">
@@ -106,6 +113,11 @@ const App: React.FC = () => {
         className="relative col-span-3"
         style={{ background: '#FAEBD7' }}
         onClick={() => setSelectedNodes([])} // Reset selected nodes on click
+        onMouseUp={e => {
+
+          if (e.ctrlKey) return;
+          groupSelectedNodes();
+        }}
       >
         {nodes.children?.map((childNode) => (
           <NodeComponent

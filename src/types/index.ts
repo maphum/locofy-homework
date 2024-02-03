@@ -15,19 +15,14 @@ export type Node = {
     children: Node[];
     parentNode?: Node;
 };
-const mapIdToNode: Record<string, Node> = {};
 
 export const setupParent = (node: Node, parentNode: Node | undefined = undefined): Node => {
     const adjustedNode = {
         ...node,
         parentNode
     };
-    mapIdToNode[node.id] = node;
-    // If the node has children, adjust their positions recursively
-    if (adjustedNode.children && adjustedNode.children.length > 0) {
-        adjustedNode.children = adjustedNode.children.map(child =>
-            setupParent(child, adjustedNode));
-    }
+    adjustedNode.children = adjustedNode.children.map(child =>
+        setupParent(child, adjustedNode));
 
     return adjustedNode;
 };
@@ -36,12 +31,12 @@ export const detachParentAndGroupNodes = (rootNode: Node, selectedNodes: string[
     const groupNodes: Node[] = selectedNodes.map(nodeId => findNodeById(rootNode, nodeId)).filter(node => node !== undefined) as Node[]
 
     let sharedParent = groupNodes[0].parentNode || rootNode;
-    console.log(groupNodes)
 
     groupNodes.forEach(node => {
         groupNodes.forEach(deleteNode => {
             deleteChildNodeById(node, deleteNode.id);
         })
+        deleteChildNodeById(rootNode, node.id);
     })
 
     groupNodes.forEach(node => {
@@ -50,6 +45,7 @@ export const detachParentAndGroupNodes = (rootNode: Node, selectedNodes: string[
         parentNode = findNodeById(rootNode, parentNode.id) as Node;
         if (parentNode) {
             parentNode.children = parentNode.children.filter(child => child.id != node.id);
+            parentNode.children.forEach(node => node.parentNode = parentNode);
         }
         if (sharedParent?.id !== parentNode?.id) {
             sharedParent = rootNode;
@@ -58,6 +54,7 @@ export const detachParentAndGroupNodes = (rootNode: Node, selectedNodes: string[
 
         node.parentNode = undefined;
     })
+
     const bounds = groupNodes.reduce((acc, node) => {
         if (node) {
             acc.minX = Math.min(acc.minX, node.x);
@@ -67,9 +64,8 @@ export const detachParentAndGroupNodes = (rootNode: Node, selectedNodes: string[
         }
         return acc;
     }, { minX: Infinity, minY: Infinity, maxX: 0, maxY: 0 });
-    console.log(bounds);
     const str = groupName + (groupId++);
-    console.log(getRandomColor())
+
     const newParentNode: Node = {
         id: str,
         name: str,
@@ -85,6 +81,8 @@ export const detachParentAndGroupNodes = (rootNode: Node, selectedNodes: string[
     groupNodes.forEach(node => { node.parentNode = newParentNode })
     sharedParent?.children.push(newParentNode);
 
+
+    setupParent(rootNode);
     return rootNode;
 }
 
@@ -136,7 +134,6 @@ export const adjustParentBounds = (parentNode: Node) => {
 };
 
 export const addNewNode = (root: Node, selectedNodes: string[]) => {
-    console.log(selectedNodes);
     if (selectedNodes.length == 0) selectedNodes = [root.id]
     selectedNodes.map(id => findNodeById(root, id)).filter(node => node !== null).forEach(node => {
         const str = (nodeId++).toString();
@@ -155,6 +152,33 @@ export const addNewNode = (root: Node, selectedNodes: string[]) => {
     })
 
 }
+export function findMostIntersectingSibling(node: Node): Node | null {
+
+    if (!node.parentNode) {
+        return null; // No parent means no siblings
+    }
+
+    let maxIntersection = 0;
+    let mostIntersectingSibling: Node | null = null;
+
+    node.parentNode.children.forEach(sibling => {
+        if (sibling.id !== node.id) {
+            const intersection = calculateIntersection(node, sibling);
+            if (intersection > maxIntersection) {
+                maxIntersection = intersection;
+                mostIntersectingSibling = sibling;
+            }
+        }
+    });
+    return mostIntersectingSibling;
+}
+
+export function calculateIntersection(node1: Node, node2: Node): number {
+    const xOverlap = Math.max(0, Math.min(node1.x + node1.width, node2.x + node2.width) - Math.max(node1.x, node2.x));
+    const yOverlap = Math.max(0, Math.min(node1.y + node1.height, node2.y + node2.height) - Math.max(node1.y, node2.y));
+    return xOverlap * yOverlap;
+}
+
 
 export const deleteSelected = (root: Node, selectedNodes: string[]) => {
     selectedNodes.forEach(id => deleteChildNodeById(root, id))
