@@ -52,7 +52,7 @@ const NodeComponent: React.FC<NodeComponentProps> = ({ node, isSelected, onSelec
         position: 'absolute' as const,
         border: selectedNodes.includes(node.id) ? '4px solid white' : '4px solid gray', // Highlight if selected
         radius: '4px',
-        zIndex: selectedNodes.includes(node.id) ? 100000000 : 1,
+        zIndex: selectedNodes.includes(node.id) ? 100000000 : 1 + (isDragging ? 100 : 0),
         cursor: isDragging ? 'grabbing' : 'grab',
     };
 
@@ -70,7 +70,7 @@ const NodeComponent: React.FC<NodeComponentProps> = ({ node, isSelected, onSelec
             }}
             className={`rounded-lg`}
         >
-            <div className='relative'>
+            <div className='relative text-center items-center'>
                 {node.children?.map((childNode) => (
                     <NodeComponent
                         key={childNode.id}
@@ -80,6 +80,7 @@ const NodeComponent: React.FC<NodeComponentProps> = ({ node, isSelected, onSelec
                         onMove={onMove}
                     />
                 ))}
+                {node.name}
             </div>
         </div>
     );

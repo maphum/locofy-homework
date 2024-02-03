@@ -62,6 +62,7 @@ const App: React.FC = () => {
           node={nodes}
           onNodeSelect={handleNodeSelect}
           selectedNodeIds={selectedNodes}
+        // expandIdsProp={listExpandIds(nodes, selectedNodes)}
         />
         <div className='flex flex-col items-start p-5 border border-t-4 border-t-gray-600'>
           <span className='font-medium mb-4'>Hold Ctrl to select multiple Nodes</span>

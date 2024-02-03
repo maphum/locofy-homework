@@ -6,6 +6,7 @@ interface TreeViewProps {
     node: Node;
     onNodeSelect: (nodeId: string, ctrlPressed: boolean) => void;
     selectedNodeIds: string[];
+    // expandIdsProp: string[]
 }
 
 
@@ -15,12 +16,14 @@ const TreeView: React.FC<TreeViewProps> = ({ node, onNodeSelect, selectedNodeIds
     const toggleExpand = (id: string) => {
         setExpandedIds(expandedIds.includes(id) ? expandedIds.filter(expandedId => expandedId !== id) : [...expandedIds, id]);
     };
-
+    const expand = (id: string) => {
+        return expandedIds.includes(id);
+    }
     const renderTree = (node: Node): JSX.Element => (
         <div>
             <div className="flex justify-between items-center">
                 <span className={`flex items-center cursor-pointer text-sm  ${node.children ? 'font-normal' : ''} ${selectedNodeIds.includes(node.id) ? 'text-blue-400' : " text-gray-800"} `} onClick={() => toggleExpand(node.id)}>
-                    {expandedIds.includes(node.id) ? (
+                    {expand(node.id) ? (
                         <svg width="24" height="24" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                             <line x1="8" y1="12" x2="12" y2="16" strokeWidth="2" strokeLinecap="round" />
                             <line x1="16" y1="12" x2="12" y2="16" strokeWidth="2" strokeLinecap="round" />
@@ -36,7 +39,7 @@ const TreeView: React.FC<TreeViewProps> = ({ node, onNodeSelect, selectedNodeIds
                     Select
                 </a>
             </div>
-            {expandedIds.includes(node.id) && node.children && (
+            {expand(node.id) && node.children && (
                 <div className="ml-4">
                     {node.children.map(childNode => renderTree(childNode))}
                 </div>

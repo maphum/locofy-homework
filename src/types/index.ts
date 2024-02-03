@@ -1,7 +1,8 @@
 // src/types/index.ts
-const groupName = 'new-group';
+const groupName = 'new-group-';
+const nodeName = 'node-';
 let groupId = 1;
-let nodeId = 10;
+let nodeId = 6;
 const colors = ["#ef4444", "#f97316", "#f59e0b", "#eab308", "#84cc16", "#22c55e", "#10b981", "#14b8a6", "#06b6d4", "#0ea5e9", "#6366f1", "#8b5cf6", "#a855f7", "#d946ef"]
 
 export type Node = {
@@ -136,7 +137,7 @@ export const adjustParentBounds = (parentNode: Node) => {
 export const addNewNode = (root: Node, selectedNodes: string[]) => {
     if (selectedNodes.length == 0) selectedNodes = [root.id]
     selectedNodes.map(id => findNodeById(root, id)).filter(node => node !== null).forEach(node => {
-        const str = (nodeId++).toString();
+        const str = nodeName + (nodeId++).toString();
         node!.children.push({
             x: node!.x + 5,
             y: node!.y + 5,
@@ -177,6 +178,18 @@ export function calculateIntersection(node1: Node, node2: Node): number {
     const xOverlap = Math.max(0, Math.min(node1.x + node1.width, node2.x + node2.width) - Math.max(node1.x, node2.x));
     const yOverlap = Math.max(0, Math.min(node1.y + node1.height, node2.y + node2.height) - Math.max(node1.y, node2.y));
     return xOverlap * yOverlap;
+}
+
+export function listExpandIds(rootNode: Node, selectedNodes: string[]) {
+    const result: string[] = [];
+    selectedNodes.map(id => findNodeById(rootNode, id)).forEach(node => {
+        while (node?.parentNode) {
+            result.push(node?.parentNode.id);
+            node = node.parentNode;
+        }
+    })
+
+    return result;
 }
 
 
