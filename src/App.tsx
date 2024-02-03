@@ -65,9 +65,11 @@ const App: React.FC = () => {
           >
             Group Nodes
           </button>
+          <span className='font-medium mb-2'>Make new child node inside root node or inside selected nodes:</span>
+
           <button
             onClick={() => {
-              addNewNode(nodes);
+              addNewNode(nodes, selectedNodes);
               setNodes({ ...nodes });
             }}
             className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"

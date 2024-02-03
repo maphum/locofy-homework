@@ -108,7 +108,7 @@ export const deleteChildNodeById = (root: Node, nodeIdToDelete: string): Node =>
 };
 
 export const adjustParentBounds = (parentNode: Node) => {
-    if (parentNode == undefined) return;
+    if (parentNode == undefined || parentNode === null) return;
     let minX = parentNode.x;
     let minY = parentNode.y;
     let maxX = 0;
@@ -135,19 +135,24 @@ export const adjustParentBounds = (parentNode: Node) => {
     adjustParentBounds(parentNode.parentNode!)
 };
 
-export const addNewNode = (root: Node) => {
-    const str = (nodeId++).toString();
-    root.children.push({
-        x: 5,
-        y: 5,
-        width: 75,
-        height: 75,
-        background: getRandomColor(),
-        children: [],
-        name: str,
-        id: "Node" + str,
-        parentNode: root
+export const addNewNode = (root: Node, selectedNodes: string[]) => {
+    if (selectedNodes.length == 0) selectedNodes = [root.id]
+    selectedNodes.map(id => findNodeById(root, id)).filter(node => node !== null).forEach(node => {
+        const str = (nodeId++).toString();
+        node!.children.push({
+            x: node!.x + 5,
+            y: node!.y + 5,
+            width: 75,
+            height: 75,
+            background: getRandomColor(),
+            children: [],
+            name: str,
+            id: "Node" + str,
+            parentNode: node!
+        })
+        adjustParentBounds(node!)
     })
+
 }
 
 export const deleteSelected = (root: Node, selectedNodes: string[]) => {
